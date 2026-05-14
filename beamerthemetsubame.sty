@@ -1,0 +1,133 @@
+% beamerthemetsubame.sty
+% LuaLaTeX専用
+\mode<presentation>
+
+% ----------------------------------------------------------------------
+% パッケージ
+% ----------------------------------------------------------------------
+\usepackage{luatexja}
+\usepackage[no-math]{fontspec}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{unicode-math}
+\usepackage{setspace}
+\usepackage{appendixnumberbeamer}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
+
+% ----------------------------------------------------------------------
+% ベーステーマ
+% ----------------------------------------------------------------------
+\usetheme[block=fill, numbering=fraction]{metropolis}
+
+% ----------------------------------------------------------------------
+% 色
+% ----------------------------------------------------------------------
+\definecolor{mLightBrown}{HTML}{D07A1B}
+
+% ----------------------------------------------------------------------
+% 欧文フォント
+% ----------------------------------------------------------------------
+\setmainfont[
+    BoldFont=NotoSansCJKjp-Bold,
+    LightFont=NotoSansCJKjp-Light,
+    ItalicFont=NotoSans-MediumItalic,
+    SmallCapsFont=NotoSansCJKjp-Regular,
+]{NotoSansCJKjp-Regular}
+\setsansfont[
+    BoldFont=NotoSansCJKjp-Bold,
+    LightFont=NotoSansCJKjp-Regular,
+    ItalicFont=NotoSans-MediumItalic,
+    SmallCapsFont=NotoSansCJKjp-Regular,
+]{NotoSansCJKjp-Regular}
+
+% ----------------------------------------------------------------------
+% 和文フォント
+% ----------------------------------------------------------------------
+\setmainjfont[
+    BoldFont=NotoSansCJKjp-Bold,
+    LightFont=NotoSansCJKjp-Light,
+]{NotoSansCJKjp-Regular}
+\setsansjfont[
+    BoldFont=NotoSansCJKjp-Bold,
+    LightFont=NotoSansCJKjp-Light,
+]{NotoSansCJKjp-Regular}
+
+% ----------------------------------------------------------------------
+% 数式フォント
+% ----------------------------------------------------------------------
+\setmathfont{NewComputerModernMath}
+\setmathfontface{\mathrm}{NewComputerModernMath}
+
+% ----------------------------------------------------------------------
+% その他設定
+% ----------------------------------------------------------------------
+\urlstyle{same}
+\renewcommand{\baselinestretch}{1.368}
+
+% ----------------------------------------------------------------------
+% タイトルページに日付を追加
+% ----------------------------------------------------------------------
+\addtobeamertemplate{title page}{}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north east, yshift=-1em, xshift=-3em]
+      at (current page.north east) {\normalsize \the\year/\the\month/\the\day};
+  \end{tikzpicture}
+}
+
+% ----------------------------------------------------------------------
+% フレームタイトルのサイズ
+% ----------------------------------------------------------------------
+\setbeamerfont{frametitle}{size=\Large}
+
+% ----------------------------------------------------------------------
+% カスタムコマンド
+% ----------------------------------------------------------------------
+% ▶︎見出し
+\newcommand{\subsectionhead}[1]{\textbf{\large ▶︎#1}}
+
+% ----------------------------------------------------------------------
+% カスタム環境
+% ----------------------------------------------------------------------
+% 大きめdescription（概要・まとめスライド用）
+\newenvironment{myitemlarge}{%
+  \begin{description}[style=nextline, font=\Large\bfseries, leftmargin=0pt, itemsep=3ex]
+}{%
+  \end{description}
+}
+
+% 普通サイズdescription（詳細スライド用）
+\newenvironment{myitem}{%
+  \begin{description}[style=nextline, font=\large\bfseries, leftmargin=0pt, itemsep=1ex]
+}{%
+  \end{description}
+}
+
+% ----------------------------------------------------------------------
+% tikzスタイル
+% ----------------------------------------------------------------------
+\tikzset{
+  tsubamebox/.style={
+    fill=gray!20,
+    rounded corners,
+    text height=15pt,
+    text depth=8pt,
+    inner xsep=10pt,
+    minimum width=4cm,
+    minimum height=1cm,
+  },
+  tsubamearrow/.style={
+    ->,
+    line width=6pt,
+    draw=gray!30,
+    fill=gray!30,
+    shorten >=7pt,
+    shorten <=7pt,
+    >={Triangle[length=4mm, width=7mm]}
+  }
+}
+
+\mode<all>
