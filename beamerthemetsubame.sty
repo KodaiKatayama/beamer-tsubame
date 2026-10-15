@@ -28,7 +28,20 @@
 % ----------------------------------------------------------------------
 % 色
 % ----------------------------------------------------------------------
-\definecolor{mLightBrown}{HTML}{D07A1B}
+% 東京科学大学のブランドカラー（https://www.isct.ac.jp/en/001/about/brand/logo）
+% Science Blue：フレームタイトルの背景・本文
+\definecolor{mDarkTeal}{HTML}{1C3177}
+% サブカラー：プログレスバー・タイトル下の線
+\definecolor{mLightBrown}{HTML}{7F96C2}
+% エクステンディッドカラーのアクセント（https://design-system.isct.ac.jp/ja/brand/elements/color/color-system）：\alert
+\definecolor{tsubameOrange}{HTML}{FF8732}
+\setbeamercolor{progress bar}{fg=mLightBrown, bg=mLightBrown!50!black!30}
+\setbeamercolor{alerted text}{fg=tsubameOrange}
+% エクステンディッドカラーのバックグラウンド：block・tsubamebox の地
+\definecolor{tsubameBgDark}{HTML}{E8EAF1}
+\definecolor{tsubameBgLight}{HTML}{F2F4F9}
+\setbeamercolor{block title}{fg=mDarkTeal, bg=tsubameBgDark}
+\setbeamercolor{block body}{bg=tsubameBgLight}
 
 % ----------------------------------------------------------------------
 % 欧文フォント
@@ -113,7 +126,7 @@
 % ----------------------------------------------------------------------
 \tikzset{
   tsubamebox/.style={
-    fill=gray!20,
+    fill=tsubameBgDark,
     rounded corners,
     text height=15pt,
     text depth=8pt,
@@ -124,8 +137,8 @@
   tsubamearrow/.style={
     ->,
     line width=6pt,
-    draw=gray!30,
-    fill=gray!30,
+    draw=mLightBrown!50,
+    fill=mLightBrown!50,
     shorten >=7pt,
     shorten <=7pt,
     >={Triangle[length=4mm, width=7mm]}
