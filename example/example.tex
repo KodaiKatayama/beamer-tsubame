@@ -5,27 +5,68 @@
 \subtitle{サブタイトル}
 \author{著者}
 \institute{所属}
-\date{}
 
 \begin{document}
 
-\frame{\maketitle}
+\maketitle
 
-\begin{frame}{箇条書きの例}
-    \begin{itemize}
-        \item 項目1
-        \item 項目2
-        \item 項目3
-    \end{itemize}
+\begin{frame}{概要}
+    \begin{myitemlarge}
+        \item[背景]\hspace{0pt}\\[-1.3em]
+        myitemlarge 環境は概要・まとめのスライド用
+        \item[提案]\hspace{0pt}\\[-1.3em]
+        見出しを大きく，項目の間を広く取る
+        \item[結果]\hspace{0pt}\\[-1.3em]
+        3項目くらいまでが収まりよい
+    \end{myitemlarge}
 \end{frame}
 
-\begin{frame}{description環境の例}
+\section{基本の要素}
+
+\begin{frame}{箇条書きと強調}
+    \begin{itemize}
+        \item 本文は Science Blue
+        \item \alert{\textbackslash alert} で強調するとアクセントのオレンジ
+        \item 数式は New Computer Modern Math
+    \end{itemize}
+    \[
+        f(x) = \sum_{i=1}^{n} w_i \phi_i(x)
+    \]
+\end{frame}
+
+\begin{frame}{description 環境}
+    \subsectionhead{myitem}
     \begin{myitem}
         \item[見出し1]\hspace{0pt}\\[-1.3em]
-        内容1
+        詳細スライド用．見出しの下に内容を書く
         \item[見出し2]\hspace{0pt}\\[-1.3em]
         内容2
     \end{myitem}
+\end{frame}
+
+\begin{frame}{ブロック}
+    \begin{block}{定義}
+        ブロックの地はエクステンディッドカラーのバックグラウンド2色
+    \end{block}
+    \begin{alertblock}{注意}
+        alertblock は見出しがオレンジになる
+    \end{alertblock}
+\end{frame}
+
+\section{図}
+
+\begin{frame}{tsubamebox と tsubamearrow}
+    \begin{center}
+        \begin{tikzpicture}
+            \node[tsubamebox] (a) {入力};
+            \node[tsubamebox, right=2cm of a] (b) {出力};
+            \draw[tsubamearrow] (a) -- (b);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\begin{frame}[standout]
+    ご清聴ありがとうございました
 \end{frame}
 
 \end{document}

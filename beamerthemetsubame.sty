@@ -3,6 +3,14 @@
 \mode<presentation>
 
 % ----------------------------------------------------------------------
+% オプション
+% ----------------------------------------------------------------------
+% english：スライド全体を英文の行送りにする（\usetheme[english]{tsubame}）
+\newif\iftsubame@english
+\DeclareOptionBeamer{english}{\tsubame@englishtrue}
+\ProcessOptionsBeamer
+
+% ----------------------------------------------------------------------
 % パッケージ
 % ----------------------------------------------------------------------
 \usepackage{luatexja}
@@ -81,22 +89,97 @@
 % その他設定
 % ----------------------------------------------------------------------
 \urlstyle{same}
-\renewcommand{\baselinestretch}{1.368}
 
 % ----------------------------------------------------------------------
-% タイトルページに日付を追加
+% 行送り
 % ----------------------------------------------------------------------
-\addtobeamertemplate{title page}{}{
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[anchor=north east, yshift=-1em, xshift=-1em]
-      at (current page.north east) {\normalsize \the\year/\the\month/\the\day};
-  \end{tikzpicture}
+% 行間（行と行の隙間）を和文の文字サイズ（1\zw）の0.7倍にする．
+% 和文は欧文の0.962216倍で組まれるので，行送りは文字サイズの 1.7 × 0.962216 ≒ 1.6358 倍．
+% 文字サイズの指定ごとに行送りを計算し直すので，\large なども同じ比率になる．
+% 英文は LaTeX 標準の行送り（本文で文字サイズの約1.24倍）のまま．
+\renewcommand{\baselinestretch}{1}
+\let\tsubame@setfontsize\@setfontsize
+\def\@setfontsize#1#2#3{%
+  \iftsubame@english
+    \tsubame@setfontsize#1{#2}{#3}%
+  \else
+    \tsubame@setfontsize#1{#2}{1.6358\dimexpr #2pt\relax}%
+  \fi
+  % 和文の字間：その文字サイズの5%（欧文には入らない）
+  \ltjsetparameter{kanjiskip={0.05\zw plus 0.4pt minus 0.5pt}}}
+
+% 英文の段落：\begin{english} ... \end{english}
+\newenvironment{english}{%
+  \par\tsubame@englishtrue\@currsize
+}{%
+  \par
+}
+
+% ----------------------------------------------------------------------
+% タイトルページ
+% ----------------------------------------------------------------------
+% 日付の既定値はコンパイルした日．発表日は \date{2026/10/27} のように指定する
+\date{\the\year/\the\month/\the\day}
+% 左右の余白は本文より広く，和文4文字分（4 × 0.962216 × 10.95pt ≒ 42.15pt，約14.8mm）
+\newlength{\tsubame@titlemargin}
+\setlength{\tsubame@titlemargin}{42.15pt}
+% タイトルとフレームタイトルは1つのまとまりとして読むので，行間を本文より詰める．
+% 行送りを和文の文字サイズの何倍にするか（1.4 なら行間 0.4 文字分）
+\newcommand{\tsubame@headlinefeed}{1.4}
+\setbeamertemplate{title}{
+  \raggedright%
+  \setlength{\baselineskip}{\tsubame@headlinefeed\zw}%
+  \inserttitle%
+  \par%
+  \vspace*{0.5em}
+}
+% metropolis の並びを 著者 → 所属 → 日付 に変える（左揃え）
+\setbeamertemplate{title page}{
+  \hspace*{\dimexpr\tsubame@titlemargin-\beamer@leftmargin\relax}%
+  \begin{minipage}[b][\paperheight]{\dimexpr\paperwidth-2\tsubame@titlemargin\relax}
+    \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
+    \vfill%
+    \ifx\inserttitle\@empty\else\usebeamertemplate*{title}\fi
+    \ifx\insertsubtitle\@empty\else\usebeamertemplate*{subtitle}\fi
+    \usebeamertemplate*{title separator}
+    \ifx\beamer@shortauthor\@empty\else\usebeamertemplate*{author}\fi
+    \ifx\insertinstitute\@empty\else\usebeamertemplate*{institute}\fi
+    \ifx\insertdate\@empty\else\usebeamertemplate*{date}\fi
+    \vfill
+    \vspace*{1mm}
+  \end{minipage}
 }
 
 % ----------------------------------------------------------------------
 % フレームタイトルのサイズ
 % ----------------------------------------------------------------------
 \setbeamerfont{frametitle}{size=\Large}
+
+% ----------------------------------------------------------------------
+% 左右の余白
+% ----------------------------------------------------------------------
+% 本文の和文2文字分（2 × 0.962216 × 10.95pt ≒ 21.07pt，約7.4mm）
+\newlength{\tsubame@margin}
+\setlength{\tsubame@margin}{21.07pt}
+\setbeamersize{text margin left=\tsubame@margin, text margin right=\tsubame@margin}
+% フレームタイトルの文字も本文と同じ左端に揃える（上下の空きは metropolis のまま）
+\defbeamertemplate{frametitle}{tsubame}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[%
+      wd=\paperwidth,%
+      sep=0pt,%
+      leftskip=\tsubame@margin,%
+      rightskip=\tsubame@margin,%
+    ]{frametitle}%
+  \setlength{\baselineskip}{\tsubame@headlinefeed\zw}%
+  % metropolis の \metropolis@frametitlestrut@start は後ろに空白が入り1行目だけ右にずれるので，同じ支柱をここで書く
+  \rule{0pt}{\metropolis@frametitle@padding+\totalheightof{X}}%
+  \insertframetitle%
+  \nolinebreak%
+  \metropolis@frametitlestrut@end%
+  \end{beamercolorbox}%
+}
+\setbeamertemplate{frametitle}[tsubame]
 
 % ----------------------------------------------------------------------
 % カスタムコマンド
